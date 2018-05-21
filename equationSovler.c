@@ -9,10 +9,10 @@
 #include <math.h>
 
 void menu(char choice);
-void linear(float a, float b);
-void quadratic(float a, float b, float c);
-void cubic(float a, float b, float c, int d);
-
+void linear(double a, double b);
+void quadratic(double a, double b, double c);
+void cubic(int a, int b, int c, int d);
+void printArray(int arr[], int numElements);
 
 int main(){
 
@@ -21,7 +21,7 @@ int main(){
 	printf("### MENU ###\n");
 	printf("a: Linear equation\n");
 	printf("b: Quadratic eqation\n");
-	printf("c: Cubic eqation\n");
+	printf("c: Cubic eqation. WORK IN PROGRESS!\n");
 	
 	choice = getchar();
 	
@@ -32,7 +32,8 @@ int main(){
 
 void menu(char choice){
 
-	float a, b, c;
+	double a, b, c;
+	int ca,cb,cc,cd;
 	int d;
 
 	switch(choice){
@@ -40,10 +41,10 @@ void menu(char choice){
 		case 'a':
 			printf("Linear eqation solver\n");
 			printf("Enter A:");
-			scanf("%f", &a);
+			scanf("%lf", &a);
 	
 			printf("Enter B:");
-			scanf("%f", &b);
+			scanf("%lf", &b);
 	
 			linear(a, b);
 			break;
@@ -51,13 +52,13 @@ void menu(char choice){
 		case 'b': 
 			printf("Quadratic eqation solver\n");
 			printf("Enter A:");
-			scanf("%f", &a);
+			scanf("%lf", &a);
 	
 			printf("Enter B:");
-			scanf("%f", &b);
+			scanf("%lf", &b);
 	
 			printf("Enter C:");
-			scanf("%f", &c);
+			scanf("%lf", &c);
 			
 			quadratic(a, b, c);
 			break;
@@ -65,18 +66,18 @@ void menu(char choice){
 			case 'c': 
 			printf("Cubic eqation solver\nOnly integers!\n");
 			printf("Enter A:");
-			scanf("%f", &a);
+			scanf("%d", &ca);
 	
 			printf("Enter B:");
-			scanf("%f", &b);
+			scanf("%d", &cb);
 	
 			printf("Enter C:");
-			scanf("%f", &c);
+			scanf("%d", &cc);
 			
 			printf("Enter D:");
-			scanf("%d", &d);
+			scanf("%d", &cd);
 			
-			cubic(a, b, c, d);
+			cubic(ca, cb, cc, cd);
 			break;
 		default:
 			printf("ERROR: wrong input");
@@ -84,19 +85,19 @@ void menu(char choice){
 }
 
 
-void linear(float a, float b){
+void linear(double a, double b){
 	
-	float result;
+	double result;
 	
 	//calculating x
-	result = ((b * -1)/a);
+	result = (((b * -1)/a) * -1);
 	printf("x = %0.3f\n", result);
 	
 }
 
-void quadratic(float a, float b, float c){
+void quadratic(double a, double b, double c){
 
-	float determinant, firstResult, secondResult;
+	double determinant, firstResult, secondResult;
 	
 	if(a == 0){
 		linear(b, c);
@@ -110,21 +111,27 @@ void quadratic(float a, float b, float c){
 	if(determinant > 0){
 	
 		//caluclating x1
-		firstResult = ((-b) + sqrt(determinant))/(2 * a);
+		firstResult = (((-b) + sqrt(determinant))/(2 * a) * -1);
 		printf("x1 = %0.3f\n", firstResult);
 		
 		//caluclating x2
-		secondResult = ((-b) - sqrt(determinant))/(2 * a);
+		secondResult = (((-b) - sqrt(determinant))/(2 * a) * -1);
 		printf("x2 = %0.3f\n", secondResult);
+	} else if(determinant == 0){
+	
+		firstResult = ((b * -1)/(2 * a) * -1);
+		printf("x1 = %0.3f\n", firstResult);
+	
+	
 	} else {
-		printf("ERROR: the determinant is less than 0\n");
+		printf("ERROR: Determinant < 0 \n");
 	}
 }
 
-void cubic(float a, float b, float c, int d){
+void cubic(int a, int b, int c, int d){
 	
 	if(a == 0){
-		quadratic(b, c, (float)d);
+		quadratic(b, c, (double)d);
 		return;
 	}
 	
@@ -134,37 +141,91 @@ void cubic(float a, float b, float c, int d){
 		return;
 	}
 	
-	int i, counter, MAX_FACTORS;
+	int i, counter, MAX_FACTORS, numbersInFactorA, numbersInFactorD;
 	MAX_FACTORS = 50;
-	int factors[MAX_FACTORS];
+	int factorsA[MAX_FACTORS], factorsD[MAX_FACTORS]; 
+	double allFactors[MAX_FACTORS];
 	
 	counter = 0;
-	printf("factors of %d is:\n", d);
+	
+	//factorize a
+	printf("factors of a = %d is:\n", a);
+	for(int i = 1; i <= a; ++i){
+		if(a % i == 0){
+			if(i <= MAX_FACTORS){
+				factorsA[counter] = i;
+				counter++;
+			}
+		}
+	}
+	numbersInFactorA = counter;
+	printArray(factorsA, numbersInFactorA);
+	counter = 0;
+	
 	
 	//factorize the constant d
-	for(int i = 1; i < d; ++i){
+	printf("factors of d = %d is:\n", d);
+	for(int i = 1; i <= d; ++i){
 		if(d % i == 0){
 			if(i <= MAX_FACTORS){
-				factors[counter] = i;
-				printf("%d\n", i);
+				factorsD[counter] = i;
 				counter++;
 			}
 		}
 	}
 	
-	printf("------\n");
-	
-	//test possible solutions of equation from the factors
-	int numbersInFactorArr = counter;
+	numbersInFactorD = counter;
+	printArray(factorsD, numbersInFactorD);
 	counter = 0;
 	
-	for(int j = 0; j < numbersInFactorArr; ++j){
-		int factor = factors[j];
+	printf("------------\n");
+	
+	for(int i = 0; i < numbersInFactorD; ++i){
+		int factor = factorsD[i];
+		//printf("%d\n", factor);
 		
-		if(((a*(pow(factor, 3))) + (b*(pow(factor, 2))) + (c*(factor)) + d) == 0){
+		if((
+		(a*(pow(factor, 3))) + 
+		(b*(pow(factor, 2))) + 
+		(c*(factor)) + 
+		d) == 0){
 			printf("%d is a solution\n", factor);
 		}
+		
+		if((
+		(a*(pow((factor*-1), 3))) + 
+		(b*(pow((factor*-1), 2))) + 
+		(c*((factor*-1))) + 
+		d) == 0){
+			printf("-%d is a solution\n", factor);
+		}
+		
 		counter++;
+	}
+	
+	/*
+	//test possible solutions of equation from the factors
+	for(int i = 0; i < numbersInFactorA; ++i){
+	
+		printf("%d\n", i);
+	
+		for(int j = 0; j < numbersInFactorD; ++j){
+		
+		printf("%d\n", j);
+		
+			double calcRes = factorsA[i] / factorsD[j];
+			allFactors[counter] = calcRes;
+			printf("%f / %f = %f\n", (double)factorsA[i], (double)factorsD[j], allFactors[counter]);
+			counter++;
+		}
+	}
+	*/
+}
+
+void printArray(int arr[], int elementsInArray){
+	
+	for(int i = 0; i < elementsInArray; ++i){
+		printf("%d\n", arr[i]);
 	}
 }
 
