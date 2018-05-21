@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <math.h>
 
+void menu(char choice);
 void linear(float a, float b);
 void quadratic(float a, float b, float c);
 void cubic(float a, float b, float c, int d);
@@ -15,8 +16,6 @@ void cubic(float a, float b, float c, int d);
 
 int main(){
 
-	float a, b, c;
-	int d;
 	char choice;
 	
 	printf("### MENU ###\n");
@@ -26,6 +25,16 @@ int main(){
 	
 	choice = getchar();
 	
+	menu(choice);
+
+	return 0;
+}
+
+void menu(char choice){
+
+	float a, b, c;
+	int d;
+
 	switch(choice){
 	
 		case 'a':
@@ -72,9 +81,8 @@ int main(){
 		default:
 			printf("ERROR: wrong input");
 	}
-
-	return 0;
 }
+
 
 void linear(float a, float b){
 	
@@ -96,7 +104,7 @@ void quadratic(float a, float b, float c){
 	}
 	
 	//calculating the determinant.
-	determinant = ((b*b) - (4*a*c));
+	determinant = ((pow(b,2)) - (4*a*c));
 	
 	//the equatoin is only solvable if the determinant is bigger than 0.
 	if(determinant > 0){
@@ -153,7 +161,7 @@ void cubic(float a, float b, float c, int d){
 	for(int j = 0; j < numbersInFactorArr; ++j){
 		int factor = factors[j];
 		
-		if(((a*(factor*factor*factor)) + (b*(factor*factor)) + (c*(factor)) + d) == 0){
+		if(((a*(pow(factor, 3))) + (b*(pow(factor, 2))) + (c*(factor)) + d) == 0){
 			printf("%d is a solution\n", factor);
 		}
 		counter++;
