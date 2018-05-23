@@ -11,7 +11,7 @@
 void menu(char choice);
 void linear(double a, double b);
 void quadratic(double a, double b, double c);
-void cubic(int a, int b, int c, int d);
+void cubic(double a, double b, double c, double d);
 void printArray(int arr[], int numElements);
 
 int main(){
@@ -87,17 +87,17 @@ void menu(char choice){
 
 void linear(double a, double b){
 	
-	double result;
+	double x1;
 	
 	//calculating x
-	result = (((b * -1)/a) * -1);
-	printf("x = %0.3f\n", result);
+	x1 = (((b * -1)/a) * -1);
+	printf("x = %0.3f\n", x1);
 	
 }
 
 void quadratic(double a, double b, double c){
 
-	double determinant, firstResult, secondResult;
+	double determinant, x1, x2;
 	
 	if(a == 0){
 		linear(b, c);
@@ -111,16 +111,16 @@ void quadratic(double a, double b, double c){
 	if(determinant > 0){
 	
 		//caluclating x1
-		firstResult = (((-b) + sqrt(determinant))/(2 * a) * -1);
-		printf("x1 = %0.3f\n", firstResult);
+		x1 = (((-b) + sqrt(determinant))/(2 * a) * -1);
+		printf("x1 = %0.3f\n", x1);
 		
 		//caluclating x2
-		secondResult = (((-b) - sqrt(determinant))/(2 * a) * -1);
-		printf("x2 = %0.3f\n", secondResult);
+		x2 = (((-b) - sqrt(determinant))/(2 * a) * -1);
+		printf("x2 = %0.3f\n", x2);
 	} else if(determinant == 0){
 	
-		firstResult = ((b * -1)/(2 * a) * -1);
-		printf("x1 = %0.3f\n", firstResult);
+		x1 = ((b * -1)/(2 * a) * -1);
+		printf("x1 = %0.3f\n", x1);
 	
 	
 	} else {
@@ -128,10 +128,10 @@ void quadratic(double a, double b, double c){
 	}
 }
 
-void cubic(int a, int b, int c, int d){
+void cubic(double a, double b, double c, double d){
 	
 	if(a == 0){
-		quadratic(b, c, (double)d);
+		quadratic(b, c, d);
 		return;
 	}
 	
@@ -141,85 +141,44 @@ void cubic(int a, int b, int c, int d){
 		return;
 	}
 	
-	int i, counter, MAX_FACTORS, numbersInFactorA, numbersInFactorD;
-	MAX_FACTORS = 50;
-	int factorsA[MAX_FACTORS], factorsD[MAX_FACTORS]; 
-	double allFactors[MAX_FACTORS];
+	double f, g, delimiter, i, j, k, l, m, n, p, x1, x2, x3;
 	
-	counter = 0;
 	
-	//factorize a
-	printf("factors of a = %d is:\n", a);
-	for(int i = 1; i <= a; ++i){
-		if(a % i == 0){
-			if(i <= MAX_FACTORS){
-				factorsA[counter] = i;
-				counter++;
-			}
-		}
+	//To find the delimiter i divide the equation in two (f and g)
+	//
+	f = (((3*c/a) - ((pow(b,2))/(pow(a,2))) ) / 3);
+	g = (((2*(pow(b,3))/(pow(a,3))) - (9*b*c/(pow(a,2))) + (27*d/a)) / 27);
+	
+	delimiter = (((pow(g,2))/4) + ((pow(f,3))/27));
+	printf("delimiter = %f\n", delimiter);
+	
+	//if delimiter <= 0 there are three roots (nullpunkt)
+	if(delimiter <= 0){
+	
+		i = pow(((pow(g,2) / 4 ) - delimiter) , 0.5);
+		j = pow(i,(0.3333333));
+		k = acos((g/(2*i)) * -1);
+		l = (j * -1);
+		m = cos(k/3);
+		n = sqrt(3.0) * sin(k/3);
+		p = b/(3*a) * -1;
+		
+		x1 = (2*j) * cos(k/3) - (b/(3*a)); 
+		x2 = l * (m + n) + p;
+		x3 = l * (m - n) + p;
+		
+		printf("x1 = %f\n", x1);
+		printf("x2 = %f\n", x2);
+		printf("x3 = %f\n", x3);
 	}
-	numbersInFactorA = counter;
-	printArray(factorsA, numbersInFactorA);
-	counter = 0;
-	
-	
-	//factorize the constant d
-	printf("factors of d = %d is:\n", d);
-	for(int i = 1; i <= d; ++i){
-		if(d % i == 0){
-			if(i <= MAX_FACTORS){
-				factorsD[counter] = i;
-				counter++;
-			}
-		}
-	}
-	
-	numbersInFactorD = counter;
-	printArray(factorsD, numbersInFactorD);
-	counter = 0;
-	
-	printf("------------\n");
-	
-	for(int i = 0; i < numbersInFactorD; ++i){
-		int factor = factorsD[i];
-		//printf("%d\n", factor);
-		
-		if((
-		(a*(pow(factor, 3))) + 
-		(b*(pow(factor, 2))) + 
-		(c*(factor)) + 
-		d) == 0){
-			printf("%d is a solution\n", factor);
-		}
-		
-		if((
-		(a*(pow((factor*-1), 3))) + 
-		(b*(pow((factor*-1), 2))) + 
-		(c*((factor*-1))) + 
-		d) == 0){
-			printf("-%d is a solution\n", factor);
-		}
-		
-		counter++;
+	//if delimiter > 0 there are just one root (nullpunkt)
+	else if (delimiter > 0){
+	printf("lools");
 	}
 	
-	/*
-	//test possible solutions of equation from the factors
-	for(int i = 0; i < numbersInFactorA; ++i){
 	
-		printf("%d\n", i);
 	
-		for(int j = 0; j < numbersInFactorD; ++j){
-		
-		printf("%d\n", j);
-		
-			double calcRes = factorsA[i] / factorsD[j];
-			allFactors[counter] = calcRes;
-			printf("%f / %f = %f\n", (double)factorsA[i], (double)factorsD[j], allFactors[counter]);
-			counter++;
-		}
-	}
-	*/
+	
 }
 
 void printArray(int arr[], int elementsInArray){
