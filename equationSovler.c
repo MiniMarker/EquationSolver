@@ -21,7 +21,7 @@ int main(){
 	printf("### MENU ###\n");
 	printf("a: Linear equation\n");
 	printf("b: Quadratic eqation\n");
-	printf("c: Cubic eqation. WORK IN PROGRESS!\n");
+	printf("c: Cubic eqation\n");
 	
 	choice = getchar();
 	
@@ -32,9 +32,8 @@ int main(){
 
 void menu(char choice){
 
-	double a, b, c;
+	double a, b, c , d;
 	int ca,cb,cc,cd;
-	int d;
 
 	switch(choice){
 	
@@ -64,20 +63,20 @@ void menu(char choice){
 			break;
 			
 			case 'c': 
-			printf("Cubic eqation solver\nOnly integers!\n");
+			printf("Cubic eqation solver");
 			printf("Enter A:");
-			scanf("%d", &ca);
+			scanf("%lf", &a);
 	
 			printf("Enter B:");
-			scanf("%d", &cb);
+			scanf("%lf", &b);
 	
 			printf("Enter C:");
-			scanf("%d", &cc);
+			scanf("%lf", &c);
 			
 			printf("Enter D:");
-			scanf("%d", &cd);
+			scanf("%lf", &d);
 			
-			cubic(ca, cb, cc, cd);
+			cubic(a, b, c, d);
 			break;
 		default:
 			printf("ERROR: wrong input");
@@ -141,7 +140,7 @@ void cubic(double a, double b, double c, double d){
 		return;
 	}
 	
-	double f, g, delimiter, i, j, k, l, m, n, p, x1, x2, x3;
+	double f, g, delimiter, h, i, j, k, l, m, n, p, x1, x2, x3, R, S, T, U;
 	
 	
 	//To find the delimiter i divide the equation in two (f and g)
@@ -150,7 +149,6 @@ void cubic(double a, double b, double c, double d){
 	g = (((2*(pow(b,3))/(pow(a,3))) - (9*b*c/(pow(a,2))) + (27*d/a)) / 27);
 	
 	delimiter = (((pow(g,2))/4) + ((pow(f,3))/27));
-	printf("delimiter = %f\n", delimiter);
 	
 	//if delimiter <= 0 there are three roots (nullpunkt)
 	if(delimiter <= 0){
@@ -173,9 +171,28 @@ void cubic(double a, double b, double c, double d){
 	}
 	//if delimiter > 0 there are just one root (nullpunkt)
 	else if (delimiter > 0){
-	printf("lools");
+		
+		f = (((3*c) / a) - ((pow(b,2)) / (pow(a,2)))) / 3;
+		g = ((2*(pow(b,3))/(pow(a,3))) - ((9*b*c)/(pow(a,2))) + ((27*d)/a)) / 27;	
+		h = (((pow(g,2)) / 4) + ((pow(f,3))/27));		
+		R = (((g/2)*-1) + ((pow(h,0.5))));
+		S = pow(R, (1.0/3.0));
+		T = (((g/2)*-1) - ((pow(h,0.5))));
+		
+		//Here i need to handle that T could be negative.
+		//Since the pow(x,y) is only able to prosess positive numbers
+		if(T < 0){
+			double posT = T * -1;
+			U = (pow(posT, (1.0/3.0)))* -1;
+			
+		} else {
+			U = (pow(T, (1.0/3.0)));
+		}
+		
+		//calculating x1
+		x1 = (S + U) - (b/(3*a));
+		printf("x1 = %f\n", x1);
 	}
-	
 	
 	
 	
