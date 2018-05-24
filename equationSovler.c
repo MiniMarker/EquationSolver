@@ -144,7 +144,6 @@ void cubic(double a, double b, double c, double d){
 	
 	
 	//To find the delimiter i divide the equation in two (f and g)
-	//
 	f = (((3*c/a) - ((pow(b,2))/(pow(a,2))) ) / 3);
 	g = (((2*(pow(b,3))/(pow(a,3))) - (9*b*c/(pow(a,2))) + (27*d/a)) / 27);
 	
@@ -172,25 +171,25 @@ void cubic(double a, double b, double c, double d){
 	//if delimiter > 0 there are just one root (nullpunkt)
 	else if (delimiter > 0){
 		
-		f = (((3*c) / a) - ((pow(b,2)) / (pow(a,2)))) / 3;
-		g = ((2*(pow(b,3))/(pow(a,3))) - ((9*b*c)/(pow(a,2))) + ((27*d)/a)) / 27;	
-		h = (((pow(g,2)) / 4) + ((pow(f,3))/27));		
-		R = (((g/2)*-1) + ((pow(h,0.5))));
-		S = pow(R, (1.0/3.0));
-		T = (((g/2)*-1) - ((pow(h,0.5))));
+		i = (((3*c) / a) - ((pow(b,2)) / (pow(a,2)))) / 3;
+		j = ((2*(pow(b,3))/(pow(a,3))) - ((9*b*c)/(pow(a,2))) + ((27*d)/a)) / 27;
+		k = (((pow(j,2)) / 4) + ((pow(i,3))/27));
+		l = (((j/2)*-1) + ((pow(k,0.5))));
+		m = pow(l, (1.0/3.0));
+		n = (((j/2)*-1) - ((pow(k,0.5))));
 		
 		//Here i need to handle that T could be negative.
 		//Since the pow(x,y) is only able to prosess positive numbers
-		if(T < 0){
-			double posT = T * -1;
-			U = (pow(posT, (1.0/3.0)))* -1;
+		if(n < 0){
+			double posN = n * -1;
+			p = (pow(posN, (1.0/3.0)))* -1;
 			
 		} else {
-			U = (pow(T, (1.0/3.0)));
+			p = (pow(n, (1.0/3.0)));
 		}
 		
 		//calculating x1
-		x1 = (S + U) - (b/(3*a));
+		x1 = (m + p) - (b/(3*a));
 		printf("x1 = %f\n", x1);
 	}
 	
