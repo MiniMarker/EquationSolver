@@ -15,7 +15,7 @@ int main() {
 	printf("b: Quadratic eqation\n");
 	printf("c: Cubic eqation\n");
 
-	menu(choice);
+	menu();
 
 	return 0;
 }
@@ -73,7 +73,7 @@ void menu() {
 			cubic(a, b, c, d);
 			break;
 		default:
-			printf("ERROR: wrong input");
+			printf("ERROR: wrong input\n");
 			menu();
 	}
 }
