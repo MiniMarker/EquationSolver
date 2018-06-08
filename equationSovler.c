@@ -188,10 +188,3 @@ void cubic(double a, double b, double c, double d) {
 	}
 }
 
-void printArray(int arr[], int elementsInArray) {
-
-	for(int i = 0; i < elementsInArray; ++i) {
-		printf("%d\n", arr[i]);
-	}
-}
-
